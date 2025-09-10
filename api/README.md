@@ -12,7 +12,7 @@ A FastAPI-based web application for detecting hoaxes in Indonesian text using tr
 
 ## Project Structure
 
-```
+```bash
 api/
 ├── app/
 │   ├── models/
@@ -31,17 +31,20 @@ api/
 ## Installation
 
 1. Create a virtual environment:
+
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
 2. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 3. Create a directory for model storage:
+
    ```bash
    mkdir -p models/hoax_detection_model
    ```
@@ -56,7 +59,7 @@ Start the FastAPI application:
 python run.py
 ```
 
-The API will be available at http://localhost:8000. You can access the interactive API documentation at http://localhost:8000/docs.
+The API will be available at [http://localhost:8000](http://localhost:8000). You can access the interactive API documentation at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ### API Endpoints
 
