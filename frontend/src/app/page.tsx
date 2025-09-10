@@ -9,6 +9,22 @@ interface DetectionResult {
   processed_text: string;
 }
 
+// Function to determine the appropriate width class based on confidence score
+const getProgressWidthClass = (confidence: number): string => {
+  const percentage = Math.round(confidence * 100);
+
+  if (percentage <= 10) return 'progress-width-10';
+  if (percentage <= 20) return 'progress-width-20';
+  if (percentage <= 30) return 'progress-width-30';
+  if (percentage <= 40) return 'progress-width-40';
+  if (percentage <= 50) return 'progress-width-50';
+  if (percentage <= 60) return 'progress-width-60';
+  if (percentage <= 70) return 'progress-width-70';
+  if (percentage <= 80) return 'progress-width-80';
+  if (percentage <= 90) return 'progress-width-90';
+  return 'progress-width-100';
+}
+
 export default function Home() {
   const [text, setText] = useState("");
   const [result, setResult] = useState<DetectionResult | null>(null);
@@ -23,9 +39,9 @@ export default function Home() {
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await axios.post("http://localhost:8000/predict", {
+      const response = await axios.post("http://localhost:8888/predict", {
         text: text
       });
       setResult(response.data);
@@ -44,7 +60,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Hoax Detection</h1>
           <p className="text-gray-600">Enter text to analyze whether it&apos;s a hoax or fact</p>
         </div>
-        
+
         <div className="bg-white shadow-md rounded-lg p-6 mb-8">
           <div className="mb-6">
             <label htmlFor="text" className="block text-sm font-medium text-gray-700 mb-2">
@@ -53,13 +69,13 @@ export default function Home() {
             <textarea
               id="text"
               rows={6}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 text-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter text here..."
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
           </div>
-          
+
           <div className="flex justify-center">
             <button
               onClick={handleDetect}
@@ -70,7 +86,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        
+
         {error && (
           <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
             <div className="flex">
@@ -80,11 +96,11 @@ export default function Home() {
             </div>
           </div>
         )}
-        
+
         {result && (
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Analysis Result</h2>
-            
+
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-700 font-medium">Classification:</span>
@@ -92,19 +108,18 @@ export default function Home() {
                   {result.label.toUpperCase()}
                 </span>
               </div>
-              
+
               <div className="w-full bg-gray-200 rounded-full h-2.5">
-                <div 
-                  className={`h-2.5 rounded-full ${result.label === "hoax" ? "bg-red-600" : "bg-green-600"}`}
-                  style={{width: `${result.confidence * 100}%`}}
+                <div
+                  className={`h-2.5 rounded-full ${result.label === "hoax" ? "bg-red-600" : "bg-green-600"} ${getProgressWidthClass(result.confidence)}`}
                 ></div>
               </div>
-              
+
               <div className="text-right text-sm text-gray-500 mt-1">
                 Confidence: {(result.confidence * 100).toFixed(2)}%
               </div>
             </div>
-            
+
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Processed Text:</h3>
               <p className="text-gray-600 text-sm bg-gray-50 p-3 rounded border border-gray-200">
