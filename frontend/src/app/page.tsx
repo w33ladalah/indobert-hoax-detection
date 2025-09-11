@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { API_ENDPOINTS } from "@/constants/api";
 
 interface DetectionResult {
   label: "hoax" | "fact";
@@ -41,7 +42,7 @@ export default function Home() {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:8888/predict", {
+      const response = await axios.post(API_ENDPOINTS.PREDICT, {
         text: text
       });
       setResult(response.data);
